@@ -11,6 +11,13 @@ RUN apt-get install -y build-essential g++ curl libssl-dev git vim libxml2-dev p
 RUN apt-get install -y python-pip python-pyside xvfb
 RUN apt-get install -y mongodb php5-dev
 
+RUN apt-get install -y mysql-server
+ADD start-mysqld.sh /start-mysqld.sh
+ADD create_mysql_admin_user.sh /create_mysql_admin_user.sh
+ADD my.cnf /etc/mysql/conf.d/my.cnf
+ADD supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
+RUN mkdir -p /app/mysql
+
 # Add files.
 ADD home/.bashrc /home/.bashrc
 ADD home/.gitconfig /home/.gitconfig
@@ -54,5 +61,5 @@ ENV PHP_POST_MAX_SIZE 100M
 
 ENV AUTHORIZED_KEYS **None**
 
-EXPOSE 22 80 6379 443 21 23 8080 8888 8000 27017
+EXPOSE 22 80 6379 443 21 23 8080 8888 8000 27017 3306
 CMD ["/run.sh"]

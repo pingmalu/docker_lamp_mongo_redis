@@ -23,6 +23,19 @@ if [ ! -f /.root_pw_set ]; then
 	/set_root_pw.sh
 fi
 
+VOLUME_HOME_MYSQL="/app/mysql"
+
+if [[ ! -d $VOLUME_HOME_MYSQL/mysql ]]; then
+    echo "=> An empty or uninitialized MySQL volume is detected in $VOLUME_HOME_MYSQL"
+    echo "=> Installing MySQL ..."
+    mysql_install_db > /dev/null 2>&1
+    echo "=> Done!"
+    /create_mysql_admin_user.sh
+else
+    echo "=> Using an existing volume of MySQL"
+fi
+
+
 sed -i '1i\requirepass '$REDIS_PASS /etc/redis/redis.conf
 sed -i 's/^daemonize yes/daemonize no/' /etc/redis/redis.conf
 sed -i 's/^bind 127.0.0.1/bind 0.0.0.0/' /etc/redis/redis.conf
