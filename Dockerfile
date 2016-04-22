@@ -11,7 +11,7 @@ RUN apt-get install -y build-essential g++ curl libssl-dev git vim libxml2-dev p
 RUN apt-get install -y python-pip python-pyside xvfb
 RUN apt-get install -y mongodb php5-dev
 
-RUN apt-get install -y mysql-server
+RUN apt-get install -y mysql-server php5-mysql
 ADD start-mysqld.sh /start-mysqld.sh
 ADD create_mysql_admin_user.sh /create_mysql_admin_user.sh
 ADD my.cnf /etc/mysql/conf.d/my.cnf
@@ -19,9 +19,9 @@ ADD supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
 RUN mkdir -p /app/mysql
 
 # Add files.
-ADD home/.bashrc /home/.bashrc
-ADD home/.gitconfig /home/.gitconfig
-ADD home/.scripts /home/.scripts
+ADD home/.bashrc /root/.bashrc
+ADD home/.gitconfig /root/.gitconfig
+ADD home/.scripts /root/.scripts
 
 ADD start-apache2.sh /start-apache2.sh
 ADD start-redis.sh /start-redis.sh
